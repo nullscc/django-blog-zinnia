@@ -15,8 +15,9 @@ class MPTTModelChoiceIterator(forms.models.ModelChoiceIterator):
         """
         tree_id = getattr(obj, self.queryset.model._mptt_meta.tree_id_attr, 0)
         left = getattr(obj, self.queryset.model._mptt_meta.left_attr, 0)
-        return super(MPTTModelChoiceIterator,
-                     self).choice(obj) + ((tree_id, left),)
+        # return super(MPTTModelChoiceIterator,
+        #              self).choice(obj) + ((tree_id, left),)
+        return super(MPTTModelChoiceIterator, self).choice(obj)
 
 
 class MPTTModelMultipleChoiceField(forms.ModelMultipleChoiceField):
