@@ -28,7 +28,7 @@ def entries_published(queryset):
     """
     now = timezone.now()
     return queryset.filter(
-        models.Q(start_publication__lte=now) |
+        models.Q(start_publication__lte=now) | # 使用 Q 函数才能使用 | 或 & 将两个查询联结起来
         models.Q(start_publication=None),
         models.Q(end_publication__gt=now) |
         models.Q(end_publication=None),
@@ -40,7 +40,7 @@ class EntryPublishedManager(models.Manager):
     Manager to retrieve published entries.
     """
 
-    def get_queryset(self):
+    def get_queryset(self): # 对应 .all 返回的对象
         """
         Return published entries.
         """

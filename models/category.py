@@ -29,13 +29,13 @@ class Category(MPTTModel):
 
     parent = TreeForeignKey(
         'self',
-        related_name='children',
+        related_name='children',    # 反向引用，就是相关联的对象能通过'children'找到这个对象
         null=True, blank=True,
-        on_delete=models.SET_NULL,
+        on_delete=models.SET_NULL,  # 当相关联的对象被删除以后这个键应该设置为什么
         verbose_name=_('parent category'))
 
-    objects = TreeManager()
-    published = EntryRelatedPublishedManager()
+    objects = TreeManager()         # 默认的管理器
+    published = EntryRelatedPublishedManager() # 自定义已发布的管理器
 
     def entries_published(self):
         """
@@ -49,33 +49,35 @@ class Category(MPTTModel):
         Returns category's tree path
         by concatening the slug of his ancestors.
         """
-        if self.parent_id:
+        if self.parent_id:  # 说明存在父节点，此属性由 mptt 提供
             return '/'.join(
+                # self.get_ancestors 会返回一个list，代表所有父节点
                 [ancestor.slug for ancestor in self.get_ancestors()] +
                 [self.slug])
         return self.slug
 
+    
     @models.permalink
-    def get_absolute_url(self):
+    def get_absolute_url(self): # 告诉 django 怎么得到 View on site的地址
         """
         Builds and returns the category's URL
         based on his tree path.
         """
         return ('zinnia:category_detail', (self.tree_path,))
 
-    def __str__(self):
+    def __str__(self):                          # 以字符串形式表示此 model class
         return self.title
 
     class Meta:
         """
         Category's meta informations.
         """
-        ordering = ['title']
-        verbose_name = _('category')
-        verbose_name_plural = _('categories')
+        ordering = ['title']                    # 查询时的默认排序
+        verbose_name = _('category')            # 单数名字
+        verbose_name_plural = _('categories')   # 复数名字
 
     class MPTTMeta:
         """
         Category MPTT's meta informations.
         """
-        order_insertion_by = ['title']
+        order_insertion_by = ['title']  # 保存的时候应该按哪个的顺序保存

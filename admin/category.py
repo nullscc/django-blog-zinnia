@@ -11,9 +11,14 @@ class CategoryAdmin(admin.ModelAdmin):
     """
     Admin for Category model.
     """
+    # 更改 add/change 页面的表单
     form = CategoryAdminForm
+
     fields = ('title', 'parent', 'description', 'slug')
+
+    # 在admin页面点击 change 后跳转显示的页面
     list_display = ('title', 'slug', 'get_tree_path', 'description')
+    
     prepopulated_fields = {'slug': ('title', )}
     search_fields = ('title', 'description')
     list_filter = ('parent',)

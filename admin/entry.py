@@ -28,14 +28,18 @@ class EntryAdmin(admin.ModelAdmin):
     """
     Admin for Entry model.
     """
-    form = EntryAdminForm
-    date_hierarchy = 'publication_date'
-    fieldsets = (
-        (_('Content'), {
-            'fields': (('title', 'status'), 'lead', 'content',)}),
+    form = EntryAdminForm                   # 指定使用哪个表单
+    date_hierarchy = 'publication_date'     # 会在entry的列表里面显示一个日期的层级
+    fieldsets = (                           # 定义显示方式（按顺序）
+        (_('Content'), {                    # 区块显示的名称
+            'fields': (('title', 'status'), 'lead', 'content',),}), 
+            # fields定义显示的行，tuple中的每个元素都会显示成一行，如果是嵌套的tuple就显示在两行
+
         (_('Illustration'), {
             'fields': ('image', 'image_caption'),
             'classes': ('collapse', 'collapse-closed')}),
+            # classes 定义的是不是可显示/隐藏
+
         (_('Publication'), {
             'fields': ('publication_date', 'sites',
                        ('start_publication', 'end_publication')),
@@ -54,20 +58,38 @@ class EntryAdmin(admin.ModelAdmin):
             'fields': ('featured', 'excerpt', 'authors', 'related'),
             'classes': ('collapse', 'collapse-closed')}),
         (None, {'fields': ('categories', 'tags', 'slug')}))
+
+    # list_filter在list页面定义筛选器
     list_filter = (CategoryListFilter, AuthorListFilter,
                    'publication_date', 'sites', 'status')
+
+    # list_display 在list页面显示项目的列名
     list_display = ('get_title', 'get_authors', 'get_categories',
                     'get_tags', 'get_sites', 'get_is_visible', 'featured',
                     'get_short_url', 'publication_date')
+
+    # 使用单选按钮
     radio_fields = {'content_template': admin.VERTICAL,
                     'detail_template': admin.VERTICAL}
+
+    # 默认的如果一个多对多的关系，那么会在admin site表现为一个select框，这样的框很难用
+    # 这里改成水平选择框
     filter_horizontal = ('categories', 'authors', 'related')
+
+    # 设置了这个会让 slug 跟随 title 联动
     prepopulated_fields = {'slug': ('title', )}
+
+    # 在list页面增加一个搜索框并配置搜索字段
     search_fields = ('title', 'excerpt', 'content', 'tags')
+
+
     actions = ['make_mine', 'make_published', 'make_hidden',
                'close_comments', 'close_pingbacks', 'close_trackbacks',
                'ping_directories', 'put_on_top',
                'mark_featured', 'unmark_featured']
+
+    # 在list页面的 actions是否在上面(top)/下面(bottome)显示
+    # 默认 actions_on_top = True  actions_on_bottom = False
     actions_on_top = True
     actions_on_bottom = True
 
@@ -108,7 +130,10 @@ class EntryAdmin(admin.ModelAdmin):
             return ', '.join(
                 [conditional_escape(getattr(author, author.USERNAME_FIELD))
                  for author in entry.authors.all()])
+
+    # 列名
     get_authors.short_description = _('author(s)')
+    
 
     def get_categories(self, entry):
         """
