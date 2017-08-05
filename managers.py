@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.contrib.sites.models import Site
 
 from zinnia.settings import SEARCH_FIELDS
-
+from mptt.managers import TreeManager
 DRAFT = 0
 HIDDEN = 1
 PUBLISHED = 2
@@ -33,6 +33,7 @@ def entries_published(queryset):
         models.Q(end_publication__gt=now) |
         models.Q(end_publication=None),
         status=PUBLISHED, sites=Site.objects.get_current())
+
 
 
 class EntryPublishedManager(models.Manager):
@@ -85,6 +86,26 @@ class EntryPublishedManager(models.Manager):
                 lookup |= query_part
 
         return self.get_queryset().filter(lookup)
+
+class TreeEntryRelatedPublishedManager(TreeManager):
+    """
+    Manager to retrieve objects associated with published entries.
+    """
+
+    def get_queryset(self):
+        """
+        Return a queryset containing published entries.
+        """
+        now = timezone.now()
+        return super(
+            TreeEntryRelatedPublishedManager, self).get_queryset().filter(
+            models.Q(entries__start_publication__lte=now) |
+            models.Q(entries__start_publication=None),
+            models.Q(entries__end_publication__gt=now) |
+            models.Q(entries__end_publication=None),
+            entries__status=PUBLISHED,
+            entries__sites=Site.objects.get_current()
+            ).distinct()
 
 
 class EntryRelatedPublishedManager(models.Manager):
