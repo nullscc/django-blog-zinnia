@@ -115,6 +115,7 @@
   {% if category and perms.zinnia.change_category %}
   <li>
     <a href="{% url 'admin:zinnia_category_change' category.pk %}" title="{% trans "Edit the category" %}">
+      <span class="glyphicon glyphicon-book"></span>
       {% trans "Edit the category" %}
     </a>
   </li>
@@ -122,15 +123,20 @@
   {% if tag and perms.tagging.change_tag %}
   <li>
     <a href="{% url 'admin:tagging_tag_change' tag.pk %}" title="{% trans "Edit the tag" %}">
+      <span class="glyphicon glyphicon-tag"></span>
       {% trans "Edit the tag" %}
     </a>
   </li>
   {% endif %}
+
+  {% comment %}
   {% if author and perms.auth.change_user %}
   <li>
     <a href="{% url 'change'|user_admin_urlname author.pk %}" title="{% trans "Edit the author" %}">
+      <span class="glyphicon glyphicon-edit"></span>
       {% trans "Edit the author" %}
     </a>
   </li>
   {% endif %}
+  {% endcomment %}
 {% endblock admin-tools %}
