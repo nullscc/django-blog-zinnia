@@ -60,7 +60,7 @@ def get_categories(context, template='zinnia/tags/categories.html'):
     Return the published categories.
     """
     return {'template': template,
-            'categories': Category.published.all().annotate(
+            'categories': Category.treePublished.all().annotate(
                 count_entries_published=Count('entries')),
             'context_category': context.get('category')}
 

@@ -8,7 +8,7 @@ from mptt.models import TreeForeignKey
 from mptt.managers import TreeManager
 
 from zinnia.managers import entries_published
-from zinnia.managers import EntryRelatedPublishedManager
+from zinnia.managers import EntryRelatedPublishedManager, TreeEntryRelatedPublishedManager
 
 
 @python_2_unicode_compatible
@@ -35,6 +35,7 @@ class Category(MPTTModel):
         verbose_name=_('parent category'))
 
     objects = TreeManager()         # 默认的管理器
+    treePublished = TreeEntryRelatedPublishedManager()
     published = EntryRelatedPublishedManager() # 自定义已发布的管理器
 
     def entries_published(self):
