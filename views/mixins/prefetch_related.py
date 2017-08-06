@@ -22,6 +22,8 @@ class PrefetchRelatedMixin(object):
             raise ImproperlyConfigured(
                 "%s's relation_names property must be a tuple or list." %
                 self.__class__.__name__)
+
+        # 用来优化查询结果
         return super(PrefetchRelatedMixin, self
                      ).get_queryset().prefetch_related(*self.relation_names)
 

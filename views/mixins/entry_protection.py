@@ -39,6 +39,7 @@ class EntryProtectionMixin(LoginMixin, PasswordMixin):
     """
     session_key = 'zinnia_entry_%s_password'
 
+    # 专门处理 http 的 get 方法，View类会去找这个函数
     def get(self, request, *args, **kwargs):
         """
         Do the login and password protection.
@@ -52,6 +53,7 @@ class EntryProtectionMixin(LoginMixin, PasswordMixin):
             return self.password()
         return response
 
+    # 专门处理 http 的 post 方法，View类会去找这个函数
     def post(self, request, *args, **kwargs):
         """
         Do the login and password protection.

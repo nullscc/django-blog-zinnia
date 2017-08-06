@@ -35,6 +35,8 @@ class EntryArchiveMixin(ArchiveMixin,
     - EntryQuerysetArchiveTemplateResponseMixin to provide a
       custom templates for archives.
     """
+
+    # 表示查询的是哪个model
     queryset = Entry.published.all
 
 
@@ -44,6 +46,7 @@ class EntryIndex(EntryArchiveMixin,
     """
     View returning the archive index.
     """
+    # 表示除了object_list 还有 entry_list 这个context可以代表 model 的查询结果
     context_object_name = 'entry_list'
 
 
@@ -52,6 +55,11 @@ class EntryYear(EntryArchiveMixin, BaseYearArchiveView):
     View returning the archives for a year.
     """
     make_object_list = True
+    # A boolean specifying whether to retrieve the full list of objects for this year and pass those to the template. 
+    # If True, the list of objects will be made available to the context. 
+    # If False, the None queryset will be used as the object list. 
+    # By default, this is False.
+
     template_name_suffix = '_archive_year'
 
 
@@ -68,6 +76,10 @@ class EntryWeek(EntryArchiveMixin, BaseWeekArchiveView):
     """
     template_name_suffix = '_archive_week'
 
+    # Returns a 3-tuple containing (date_list, object_list, extra_context).
+    # date_list is the list of dates for which data is available. 
+    # object_list is the list of objects. 
+    # extra_context is a dictionary of context data that will be added to any context data provided by the MultipleObjectMixin.
     def get_dated_items(self):
         """
         Override get_dated_items to add a useful 'week_end_day'

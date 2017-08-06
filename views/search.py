@@ -29,6 +29,7 @@ class BaseEntrySearch(object):
             if len(self.pattern) < 3:
                 self.error = _('The pattern is too short')
             else:
+                # 自定义的管理器自定义的 search 方法
                 entries = Entry.published.search(self.pattern)
         else:
             self.error = _('No pattern to search found')

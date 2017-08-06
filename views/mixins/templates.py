@@ -58,6 +58,8 @@ class EntryQuerysetArchiveTemplateResponseMixin(TemplateResponseMixin):
     Return a custom template name for the archive views based
     on the type of the archives and the value of the date.
     """
+
+    # 定义模板名字的后缀，加上lower(model名字)就是使用的模板的全名了
     template_name_suffix = '_archive'
 
     def get_archive_part_value(self, part):
@@ -78,11 +80,16 @@ class EntryQuerysetArchiveTemplateResponseMixin(TemplateResponseMixin):
         """
         return ['entry%s.html' % self.template_name_suffix]
 
+    # 从列表的第一个找到使用的模板
     def get_template_names(self):
         """
         Return a list of template names to be used for the view.
         """
         year = self.get_archive_part_value('year')
+        # The value of the YearMixin.year attribute.
+        # The value of the year argument captured in the URL pattern.
+        # The value of the year GET query argument.
+
         week = self.get_archive_part_value('week')
         month = self.get_archive_part_value('month')
         day = self.get_archive_part_value('day')
@@ -91,6 +98,7 @@ class EntryQuerysetArchiveTemplateResponseMixin(TemplateResponseMixin):
         path = 'zinnia/archives'
         template_names = self.get_default_base_template_names()
         for template_name in template_names:
+            # extend与append的区别在于extend能直接添加一个列表
             templates.extend([template_name,
                               'zinnia/%s' % template_name,
                               '%s/%s' % (path, template_name)])
@@ -133,6 +141,7 @@ class EntryArchiveTemplateResponseMixin(
     as the base template name.
     """
 
+    # 重载 EntryQuerysetArchiveTemplateResponseMixin 的 get_default_base_template_names 函数
     def get_default_base_template_names(self):
         """
         Return the Entry.template value.
