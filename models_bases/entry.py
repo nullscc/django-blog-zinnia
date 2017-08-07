@@ -245,10 +245,10 @@ class DiscussionsEntry(models.Model):
         _('comments enabled'), default=True,
         help_text=_('Allows comments if checked.'))
     pingback_enabled = models.BooleanField(
-        _('pingbacks enabled'), default=True,
+        _('pingbacks enabled'), default=False,
         help_text=_('Allows pingbacks if checked.'))
     trackback_enabled = models.BooleanField(
-        _('trackbacks enabled'), default=True,
+        _('trackbacks enabled'), default=False,
         help_text=_('Allows trackbacks if checked.'))
 
     comment_count = models.IntegerField(
