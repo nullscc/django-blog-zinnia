@@ -34,8 +34,6 @@ def entries_published(queryset):
         models.Q(end_publication=None),
         status=PUBLISHED, sites=Site.objects.get_current())
 
-
-
 class EntryPublishedManager(models.Manager):
     """
     Manager to retrieve published entries.
@@ -86,6 +84,14 @@ class EntryPublishedManager(models.Manager):
                 lookup |= query_part
 
         return self.get_queryset().filter(lookup)
+
+class EntryPublishedInHomeManager(EntryPublishedManager):
+    def get_queryset(self): # 对应 .all 返回的对象
+        """
+        Return published entries show in home.
+        """
+        return super(EntryPublishedInHomeManager, self).get_queryset().filter(show_inhome=True)
+
 
 class TreeEntryRelatedPublishedManager(TreeManager):
     """

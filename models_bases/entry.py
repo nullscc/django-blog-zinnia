@@ -28,7 +28,7 @@ from zinnia.settings import AUTO_CLOSE_COMMENTS_AFTER
 from zinnia.settings import AUTO_CLOSE_PINGBACKS_AFTER
 from zinnia.settings import AUTO_CLOSE_TRACKBACKS_AFTER
 from zinnia.managers import entries_published
-from zinnia.managers import EntryPublishedManager
+from zinnia.managers import EntryPublishedManager, EntryPublishedInHomeManager
 from zinnia.managers import DRAFT, HIDDEN, PUBLISHED
 from zinnia.url_shortener import get_url_shortener
 
@@ -55,7 +55,10 @@ class CoreEntry(models.Model):
     status = models.IntegerField(
         _('status'), db_index=True,
         choices=STATUS_CHOICES, default=DRAFT)
-
+    show_inhome = models.BooleanField(
+        _('show in home?'),
+        db_index=True, default=True,
+        help_text=_("Used to control whether this entry show in home."))
     publication_date = models.DateTimeField(
         _('publication date'),
         db_index=True, default=timezone.now,
@@ -86,6 +89,7 @@ class CoreEntry(models.Model):
 
     objects = models.Manager()
     published = EntryPublishedManager()
+    published_and_inhome = EntryPublishedInHomeManager()
 
     @property
     def is_actual(self):

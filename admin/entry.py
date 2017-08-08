@@ -32,7 +32,7 @@ class EntryAdmin(admin.ModelAdmin):
     date_hierarchy = 'publication_date'     # 会在entry的列表里面显示一个日期的层级
     fieldsets = (                           # 定义显示方式（按顺序）
         (_('Content'), {                    # 区块显示的名称
-            'fields': (('title', 'status'), 'lead', 'content',),}), 
+            'fields': (('title', 'status', 'show_inhome'), 'lead', 'content',),}), 
             # fields定义显示的行，tuple中的每个元素都会显示成一行，如果是嵌套的tuple就显示在两行
 
         (_('Illustration'), {

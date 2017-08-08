@@ -37,7 +37,7 @@ class EntryArchiveMixin(ArchiveMixin,
     """
 
     # 表示查询的是哪个model
-    queryset = Entry.published.all
+    queryset = Entry.published_and_inhome.all
 
 
 class EntryIndex(EntryArchiveMixin,
