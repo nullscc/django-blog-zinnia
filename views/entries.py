@@ -8,7 +8,7 @@ from zinnia.views.mixins.entry_preview import EntryPreviewMixin
 from zinnia.views.mixins.entry_protection import EntryProtectionMixin
 from zinnia.views.mixins.callable_queryset import CallableQuerysetMixin
 from zinnia.views.mixins.templates import EntryArchiveTemplateResponseMixin
-
+from zinnia.settings import MARKDOWN_EXTENSIONS
 
 class EntryDateDetail(ArchiveMixin,
                       EntryArchiveTemplateResponseMixin,
@@ -35,3 +35,20 @@ class EntryDetail(EntryCacheMixin,
     Detailled archive view for an Entry with password
     and login protections and restricted preview.
     """
+
+    def get_context_data(self, **kwargs):
+      context = super(EntryDetail, self).get_context_data(**kwargs)
+
+      try:
+          import markdown
+      except ImportError:
+          warnings.warn("The Python markdown library isn't installed.",
+                        RuntimeWarning)
+          return context
+
+      md = markdown.Markdown(extensions=MARKDOWN_EXTENSIONS)  
+      context['html_content'] = md.convert(self.object.content)
+      if len(md.toc) > 35:
+        context['toc'] = md.toc
+
+      return context
