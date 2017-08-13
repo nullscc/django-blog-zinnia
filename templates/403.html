@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block breadcrumbs %}
-<ul class="breadcrumbs">
+<ul class="breadcrumbs" style="background-color: #fff">
   <li>{% trans "Error 403" %}</li>
 </ul>
 {% endblock breadcrumbs %}
@@ -12,9 +12,11 @@
 {% block body-class %}error-403{% endblock body-class %}
 
 {% block content %}
+<div class="error_div" style="background-color: #fff">
 <h1>{% trans "Permission denied" %}</h1>
 
 <p>{% trans "Sorry, but you don't have the permission to do this action." %}</p>
 
 {{ block.super }}
+</div>
 {% endblock content %}
