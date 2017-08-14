@@ -23,6 +23,8 @@ from zinnia.admin.filters import AuthorListFilter
 from zinnia.admin.filters import CategoryListFilter
 from zinnia.comparison import EntryPublishedVectorBuilder
 
+from django.contrib.sites.shortcuts import get_current_site
+import requests
 
 class EntryAdmin(admin.ModelAdmin):
     """
@@ -96,6 +98,22 @@ class EntryAdmin(admin.ModelAdmin):
     def __init__(self, model, admin_site):
         self.form.admin_site = admin_site
         super(EntryAdmin, self).__init__(model, admin_site)
+
+    def response_add(self, request, obj, post_url_continue=None):
+        res = super(EntryAdmin, self).response_add(request, obj, post_url_continue)
+        if obj.status == PUBLISHED:
+            headers = {
+                'Content-Type': 'text/plain'
+            }
+            current_site = get_current_site(request)
+            print("----get_current_site----", current_site)
+            absolute_url = obj.get_absolute_url()
+            print("----absolute_url----", absolute_url)
+            push_data = "%s://%s%s" % (settings.PROTOCOL, current_site, absolute_url)
+            r = requests.post("http://data.zz.baidu.com/urls?site=%s&token=%s" % (current_site, settings.BAIDUTUISONGTOKEN),headers=headers,data=push_data)
+            print("----push_data", push_data)
+            print("-----r------", r.json())
+        return res
 
     # Custom Display
     def get_title(self, entry):
