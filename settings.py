@@ -2,7 +2,7 @@
 from django.conf import settings
 
 from mots_vides import stop_words
-
+import os
 
 PING_DIRECTORIES = getattr(settings, 'ZINNIA_PING_DIRECTORIES',
                            ('http://django-blog-zinnia.com/xmlrpc/',))
