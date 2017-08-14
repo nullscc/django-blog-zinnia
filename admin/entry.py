@@ -106,13 +106,9 @@ class EntryAdmin(admin.ModelAdmin):
                 'Content-Type': 'text/plain'
             }
             current_site = get_current_site(request)
-            print("----get_current_site----", current_site)
             absolute_url = obj.get_absolute_url()
-            print("----absolute_url----", absolute_url)
             push_data = "%s://%s%s" % (settings.PROTOCOL, current_site, absolute_url)
             r = requests.post("http://data.zz.baidu.com/urls?site=%s&token=%s" % (current_site, settings.BAIDUTUISONGTOKEN),headers=headers,data=push_data)
-            print("----push_data", push_data)
-            print("-----r------", r.json())
         return res
 
     # Custom Display
