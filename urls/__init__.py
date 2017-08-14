@@ -5,7 +5,7 @@ from django.conf.urls import include
 from django.utils.translation import ugettext_lazy
 
 from zinnia.settings import TRANSLATED_URLS
-
+from zinnia.views import about
 
 def i18n_url(url, translate=TRANSLATED_URLS):
     """
@@ -34,4 +34,5 @@ urlpatterns = [
     url(r'^', include('zinnia.urls.shortlink')),
     url(r'^', include('zinnia.urls.quick_entry')),
     url(r'^', include('zinnia.urls.capabilities')),
+    url(r'^about/$', about.about, name='about'),
 ]
