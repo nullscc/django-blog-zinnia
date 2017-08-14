@@ -108,7 +108,7 @@ class EntryAdmin(admin.ModelAdmin):
             current_site = get_current_site(request)
             absolute_url = obj.get_absolute_url()
             push_data = "%s://%s%s" % (settings.PROTOCOL, current_site, absolute_url)
-            r = requests.post("http://data.zz.baidu.com/urls?site=%s&token=%s" % (current_site, settings.BAIDUTUISONGTOKEN),headers=headers,data=push_data)
+            r = requests.post("http://data.zz.baidu.com/urls?site=%s&token=%s&type=original" % (current_site, settings.BAIDUTUISONGTOKEN),headers=headers,data=push_data)
         return res
 
     # Custom Display
