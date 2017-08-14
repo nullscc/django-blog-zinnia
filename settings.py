@@ -92,3 +92,5 @@ URL_SHORTENER_BACKEND = getattr(settings, 'ZINNIA_URL_SHORTENER_BACKEND',
                                 'zinnia.url_shortener.backends.default')
 
 STOP_WORDS = stop_words(settings.LANGUAGE_CODE.split('-')[0])
+
+BADUTONGJITOKEN = os.environ['BADUTONGJITOKEN']
